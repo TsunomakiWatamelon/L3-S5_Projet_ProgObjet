@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Patchwork2" default="jar">
+    <property name="src" location="src"/>
+    <property name="bin" location="bin"/>
+    <property name="lib" location="lib"/>
+    <property name="doc" location="docs/doc"/>
+    <property name="resources" location="ressource"/>
+	
+	<path id="classpath">
+	    <fileset dir="${lib}">
+	        <include name="*.jar"/>
+	    </fileset>
+	    <pathelement location="lib/zen5.jar"/>
+	</path>
+
+    
+    <target name="compile" >
+        <mkdir dir="${bin}"/>
+        <javac srcdir="${src}" destdir="${bin}" classpathref="classpath">
+            <include name="fr/uge/patchwork2/**"/>
+			<include name="fr/umlv/zen5/**"/>
+        </javac>
+    </target>
+    
+    <target name="javadoc" depends="compile">
+        <mkdir dir="${doc}"/>
+        <javadoc packagenames="fr.uge.patchwork2" sourcepath="${src}" destdir="${doc}">
+            <classpath refid="classpath"/>
+        </javadoc>
+    </target>
+    
+	<target name="jar" depends="compile">
+		<jar destfile="Patchwork.jar" basedir="${bin}">
+			<manifest>
+		        <attribute name="Main-Class" value="fr.uge.patchwork2.Main"/>
+			</manifest>
+		   	<zipfileset includes="**/*.class" src="lib/zen5.jar"/>
+			<fileset dir="${resources}"/>
+		</jar>
+	</target>
+    
+    <target name="clean">
+        <delete dir="${bin}"/>
+        <delete dir="${doc}"/>
+    </target>
+</project>
